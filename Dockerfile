@@ -13,7 +13,7 @@ RUN pip install bayesian-optimization
 RUN pip install lime
 # Installer les dépendances de l'application
 RUN pip install --no-cache-dir gunicorn flask
-# Exposer le port 5000
+
 EXPOSE 5000
 
 # Commande pour exécuter l'application avec Gunicorn
