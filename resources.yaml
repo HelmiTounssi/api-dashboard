@@ -8,8 +8,8 @@ spec:
   selector:
     app: api-dashboard
   ports:
-  - port: 9050
-    targetPort: 9050
+  - port: 5000
+    targetPort: 5000
 ---
 apiVersion: apps/v1
 kind: Deployment
