@@ -1,0 +1,38 @@
+# Ignore les fichiers d'extension .pyc générés par Python
+*.pyc
+
+# Ignore le répertoire virtuel Python généré par pipenv, poetry ou virtualenv
+venv/
+env/
+.pipenv/
+.venv/
+.venv.bak/
+.venv2/
+.virtual/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignore les fichiers de cache généraux
+__pycache__/
+
+# Ignore les fichiers de sauvegarde Emacs
+*~
+
+# Ignore les fichiers de cache de l'éditeur
+.vscode/
+.idea/
+
+# Ignore les fichiers de sortie de build
+/build/
+/dist/
+
+# Ignore les fichiers logs
+/logs/
+*.log
+
+# Ignore les fichiers de données volumineux
+*.csv
+*.xlsx
+*.db
