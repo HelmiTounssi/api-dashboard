@@ -20,6 +20,7 @@ This folder ('/api/') contains the Flask API (with a configuration file `config.
 For Proof of Concept (POC), this application reads the data locally on Heroku.
 
 For production, the code should be modified to read from an external source (with authentification, encryption and add a library for in-memory cache):
-
+## test en local
 docker build -t api-dashboard .
 docker run -p 5000:5000 api-dashboard:latest
+## github actions  fait le ci/cd en google cloud
