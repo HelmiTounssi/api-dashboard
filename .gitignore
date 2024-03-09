@@ -13,7 +13,7 @@ env/
 ENV/
 env.bak/
 venv.bak/
-
+myenv/
 # Ignore les fichiers de cache généraux
 __pycache__/
 
@@ -33,6 +33,4 @@ __pycache__/
 *.log
 
 # Ignore les fichiers de données volumineux
-*.csv
-*.xlsx
-*.db
+

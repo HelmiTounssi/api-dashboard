@@ -12,4 +12,3 @@ shap==0.41.0
 streamlit
 yellowbrick==1.4
 Werkzeug==2.2.2
-lime
