@@ -44,7 +44,7 @@ explainerdashboard==0.4.5
 fastapi==0.110.0
 fastjsonschema==2.19.1
 filelock==3.13.1
-Flask==2.1.2
+Flask==2.2.5
 Flask-Compress==1.14
 flask-simplelogin==0.1.2
 Flask-WTF==1.2.1
