@@ -29,3 +29,5 @@ docker run -p 5000:5000 api-dashboard:latest
  3- creer cloud storage Buckets  : data-model-home-credit 
  4- faire un push et github action build.xml creer le livrable docker ,push dans le registry puis instance avec ressources.yaml dans kubernetes .
  5-ajouter le token google .json et le id de projet  dans secert action dans github.
+
+ uvicorn app.main:appfast --reload
