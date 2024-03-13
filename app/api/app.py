@@ -32,8 +32,20 @@ from fastapi import FastAPI, HTTPException, Request
 
 from fastapi import FastAPI, HTTPException, Path, Query
 from pydantic_settings import BaseSettings
+import logging
+# Définir le logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
+# Créer un gestionnaire pour écrire les logs dans un fichier
+file_handler = logging.FileHandler('app.log')
+file_handler.setLevel(logging.INFO)
 
+# Créer un formateur pour le message de log
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+# Ajouter le gestionnaire au logger
+logger.addHandler(file_handler)
 class AppConfig(BaseSettings):
     model_server_: str = "./saved_models"
     model_file: str = "lgbm_best_model.pickle"
@@ -173,7 +185,39 @@ def is_true(ch: str or bool) -> bool:
     return False
 
 
+# Définir une fonction pour faire les prédictions et les appliquer à chaque ligne
+def make_prediction(id, threshold: float):
+    # Faire les prédictions de probabilité pour la ligne
+    client_data = get_client_data_dataframe(data, id)
+    if client_data is None:
+        raise HTTPException(status_code=404, detail="Client inconnu")
+
+    y_pred_proba = model.predict_proba(client_data)[:, 1]
+    y_pred_proba = y_pred_proba[0]
+    y_pred = int((y_pred_proba > threshold) * 1)
+    return y_pred
+
+
+def predictAll(threshold):
+    """
+    Renvoie le score des clients  en réalisant
+    le predict à partir du modèle final sauvegardé
+    """
+    try:
+        
+        logger.error("threshold ------------:"+str(threshold))
+        # Appliquer la fonction à chaque ligne du DataFrame pour créer une nouvelle colonne de prédictions
+        df=data_prep.copy()
+        #df["pred"] = data_prep.apply(lambda data_prep.index : make_prediction(index,float(threshold)), axis=1)
+        df["pred"]  = data_prep.index.map(lambda id: make_prediction(id, threshold))
+        json_data = df.reset_index().to_json(orient="records")
+        return json_data
+    except Exception as e:
+        logger.error(f"Erreur lors de la prédiction : {e}")
+        return {"error": "Une erreur est survenue lors de la prédiction"}
+
 # Endpoint to predict client score
+
 
 def predict(id: int, return_data: bool, threshold: float):
     """
@@ -192,17 +236,16 @@ def predict(id: int, return_data: bool, threshold: float):
     client_data_response = {}
     if return_data:
         client_data_response = client_data.iloc[0].to_dict()
-     # Convertir type_model en str
+    # Convertir type_model en str
     type_model_str = str(type_model)
     response_body = {
-       "id": id,
-       "y_pred_proba": y_pred_proba,
-       "y_pred": y_pred,
-       "model_type": type_model_str,
-       "client_data": client_data_response,
+        "id": id,
+        "y_pred_proba": y_pred_proba,
+        "y_pred": y_pred,
+        "model_type": type_model_str,
+        "client_data": client_data_response,
     }
     return JSONResponse(content=response_body)
-
 
 
 def df_to_json(df):
@@ -242,7 +285,7 @@ def explain_all(request: Request):
         "client_data": client_data_json,
     }
     return JSONResponse(content=response_body)
-    
+
 
 def explain(id: int, return_data: bool, threshold: float):
     """

@@ -11,10 +11,11 @@ RUN pip install phik
 RUN pip install prettytable
 RUN pip install bayesian-optimization
 RUN pip install lime
-# Installer les dépendances de l'application
-RUN pip install --no-cache-dir gunicorn flask
+RUN pip install pydantic-settings
 
+
+# Exposez le port 5000 (le port sur lequel votre application écoute)
 EXPOSE 5000
 
-# Commande pour exécuter l'application avec Gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "run:app"]
+# Commande pour exécuter votre application FastAPI avec Uvicorn
+CMD ["uvicorn", "app.main:appfast", "--reload", "--host", "0.0.0.0", "--port", "5000"]

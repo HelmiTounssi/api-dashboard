@@ -59,8 +59,13 @@ async def predict(
 ):
     return app.predict(id, return_data, threshold)
 
+@appfast.get("/all/predict")
+async def predict(
+    threshold: float = Query(0.5)
+):
+    return app.predictAll(threshold)
 
-@appfast.get("/explain/all")
+@appfast.get("/all/explain")
 async def explain_all(request: Request):
     return app.explain_all(request)
 
